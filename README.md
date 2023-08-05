@@ -80,3 +80,55 @@ private static void deleteUser(id){
 }
 ````
 
+# Dependencies
+Those dependencies are needed for the plugin to work. Choose between Maven and Gradle.
+<br>
+## Gradle (kotlin)
+````
+repositories {
+  maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
+  
+  maven("https://oss.sonatype.org/content/repositories/snapshots")
+  maven("https://oss.sonatype.org/content/repositories/central")
+}
+
+dependencies {
+  compileOnly("org.spigotmc:spigot-api:1.19.3-R0.1-SNAPSHOT")
+  compileOnly("org.spigotmc:spigot:1.19.3-R0.1-SNAPSHOT")
+  compile group: 'com.zaxxer', name: 'HikariCP', version: '3.1.0"
+}
+
+````
+
+
+## Maven
+````
+<repository>
+            <id>spigot-repo</id>
+            <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+</repository>
+<dependency>
+            <groupId>org.bukkit</groupId>
+            <artifactId>bukkit</artifactId>
+            <version>1.8.8-R0.1-SNAPSHOT</version>
+            <scope>provided</scope>
+</dependency>
+<dependency>
+	<groupId>com.zaxxer</groupId>
+	<artifactId>HikariCP</artifactId>
+	<version>3.1.0</version>
+</dependency>
+````
+
+# Issues / Fixes
+
+If something doesn't work, feel free to open an issue and I'll try to find a fix for it as soon as possible. if you have any other suggestions or requests, please let me know. Otherwise I hope that this page helped you out.
+
+<h3 align="left">Contact</h3>
+<p align="left">
+<a href="https://discord.gg/Qb6BzpAt8V" target="blank"><img align="center" src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/discord.svg" alt="Qb6BzpAt8V" height="30" width="40" /></a>
+ <a href="https://twitter.com/HennerichFelix" target="blank"><img align="center" src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/twitter.svg" alt="HennerichFelix" height="30" width="40" /></a>
+ <a href="https://www.youtube.com/channel/UCKNT0NCikpds9nWKhIQcS3w" target="blank"><img align="center" src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/youtube.svg" alt="1BlueNitrox" height="30" width="40" /></a>
+  <a href="https://www.instagram.com/felixderkeinennamenkennt/" target="blank"><img align="center" src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/instagram.svg" alt="felixderkeinennamenkennt" height="30" width="40" /></a>
+</p>
+
