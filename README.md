@@ -1,2 +1,2 @@
-# Java-MySQL-Helper
-Basic Method for MySQL connections in Java
+# Java-me.bluenitrox.MySQL-Helper
+Basic Method for me.bluenitrox.MySQL connections in Java
