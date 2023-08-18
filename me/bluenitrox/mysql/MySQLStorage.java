@@ -1,8 +1,5 @@
 package me.bluenitrox.mysql;
 
-import com.zaxxer.hikari.HikariConfig;
-import com.zaxxer.hikari.HikariDataSource;
-
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -11,41 +8,59 @@ import java.util.Properties;
 
 public class MySQLStorage {
 
-    public static String host;
-    public static String port;
-    public static String database;
-    public static String username;
-    public static String password;
+    private static final String DATABASE_DRIVER = "com.mysql.cj.jdbc.Driver";
+    private static final String DATABASE_URL = "jdbc:mysql://localhost:3306/database_name";
+    private static final String USERNAME = "root";
+    private static final String PASSWORD = "";
+    private static final String MAX_POOL = "250"; // set your own limit.
 
-    private static Connection connection;
-    private static HikariConfig config = new HikariConfig();
-    private static HikariDataSource dataSource;
 
-    public static void connect() {
-        config.setJdbcUrl("jdbc:mysql://" + host + ":" + port + "/" + database);
-        config.setUsername(username);
-        config.setPassword(password);
-        config.addDataSourceProperty("cachePrepStmts", "true");
-        config.addDataSourceProperty("prepStmtCacheSize", "250");
-        config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
-        config.setMaximumPoolSize(10);
-        dataSource = new HikariDataSource(config);
+    private Connection connection;
+    private Properties properties;
 
+    /**
+     * get important MySQL Properties
+     * @return -> Properties
+     */
+    private Properties getProperties() {
+        if (properties == null) {
+            properties = new Properties();
+            properties.setProperty("user", USERNAME);
+            properties.setProperty("password", PASSWORD);
+            properties.setProperty("MaxPooledStatements", MAX_POOL);
+        }
+        return properties;
     }
 
-    public static void disconnect() {
-        if(isConnected()) {
-            dataSource.close();
-            System.out.println("§eVerbindung §7mit §eMySQL §cgeschlossen");
+    /**
+     * Connect to MySQL database and return the connection
+     * @return -> Connection
+     */
+    public Connection connect() {
+        if (connection == null) {
+            try {
+                Class.forName(DATABASE_DRIVER);
+                connection = DriverManager.getConnection(DATABASE_URL, getProperties());
+            } catch (ClassNotFoundException | SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return connection;
+    }
+
+    /**
+     * Disconnect the database from your client
+     */
+    public void disconnect() {
+        if (connection != null) {
+            try {
+                connection.close();
+                connection = null;
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 
-    public static boolean isConnected() {
-        return (connection == null ? false : true);
-    }
 
-
-    public static DataSource getHikariDataSource() {
-        return dataSource;
-    }
 }

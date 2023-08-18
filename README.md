@@ -1,5 +1,5 @@
 # Java-MySQL-Helper
-version: **1.0.0**
+version: **1.1.0**
 ***
 
 This database helper helps you with projects where you need to store any information in a external database. More databases will be supported soon.
@@ -12,113 +12,93 @@ Currently, the following databases are integrated:
 # Useful Code
 To open a new storage table use the code below and change 'spielerdaten' and 'spieleruuid' to your values.
 ```` java
-try(Connection connection = MySQL.getHikariDataSource().getConnection(); PreparedStatement ps = connection.prepareStatement("CREATE TABLE IF NOT EXISTS `spielerdaten` ( `spieleruuid` CHAR(36) NOT NULL)");) {
-    ps.executeUpdate();
+MySQLStorage mysqlStorage = new MySQLStorage();
+String sql = "CREATE TABLE IF NOT EXISTS `spielerdaten` ( `spieleruuid` CHAR(36) NOT NULL)";
+try{
+    PreparedStatement statement = mysqlStorage.connect().prepareStatement(sql);
+    statement.execureQuery();
+} catch (SQLException e){
+    e.printStackTrace();
+} finally {
+    mysqlStorage.disconnect();
 }
 ````
 <br>
 
 To add a user to the database use the following code. Change where 'table', 'id' and 'startvalue'
 ```` java
-public static void insertdatabase(id, startvalue){
-    try (Connection connection = MySQL.getHikariDataSource().getConnection(); PreparedStatement ps = connection.prepareStatement("INSERT INTO table (id, startvalue) VALUES (?, ?)")) {
-        ps.setString(1, id);
-        ps.setInt(2, startvalue);
-        ps.executeUpdate();
-    } catch (SQLException e) {
-        e.printStackTrace();
-    }
+MySQLStorage mysqlStorage = new MySQLStorage();
+String sql = "INSERT INTO table (id, startvalue) VALUES (?, ?)";
+try{
+    PreparedStatement statement = mysqlStorage.connect().prepareStatement(sql);
+    statement.setString(1, id);
+    statement.setInt(2, startvalue);
+    statement.executeUpdate();
+} catch (SQLException e){
+    e.printStackTrace();
+} finally {
+    mysqlStorage.disconnect();
 }
 ````
 <br>
 
 To update a user in the database use the following code. Update where 'id','table','value' and 'amount'
-````java
-public static void updateDatabase(id , amount) {
-        
-    try (Connection connection = MySQL.getHikariDataSource().getConnection(); PreparedStatement ps = connection.prepareStatement("UPDATE table SET value = ? WHERE id = ?")) {
-        ps.setFloat(1, amount);
-        ps.setString(2, id);
-        ps.executeUpdate();
-    } catch (SQLException e) {
-        e.printStackTrace();
-    }
+```` java
+MySQLStorage mysqlStorage = new MySQLStorage();
+String sql = "UPDATE table SET value = ? WHERE id = ?";
+try{
+    PreparedStatement statement = mysqlStorage.connect().prepareStatement(sql);
+    statement.setFloat(1, amount);
+    statement.setString(2, id);
+    statement.executeUpdate();
+} catch (SQLException e){
+    e.printStackTrace();
+} finally {
+    mysqlStorage.disconnect();
 }
 ````
 
 <br>
 
 To get a user from the database use the following code. Edit where 'table', 'id' and 'value'
-````java
-public static int getDatabase(id) {
-    int amount = 0;
-
-    try (Connection connection = MySQL.getHikariDataSource().getConnection(); PreparedStatement ps = connection.prepareStatement("SELECT value FROM table WHERE id = ?")) {
-        ps.setString(1, id);
-        ResultSet rs = ps.executeQuery();
-        while (rs.next()) {
-            amount = rs.getInt(value);
-        }
-     } catch (SQLException e) {
-           e.printStackTrace();
-     }
-  return amount;
+```` java
+MySQLStorage mysqlStorage = new MySQLStorage();
+String sql = "SELECT value FROM table WHERE id = ?";
+int amount = 0;
+try{
+    PreparedStatement statement = mysqlStorage.connect().prepareStatement(sql);
+    statement.setString(1, id);
+    ResultSet rs = statement.executeQuery();
+    while (rs.next()) {
+        amount = rs.getInt(value);
+    }
+} catch (SQLException e){
+    e.printStackTrace();
+} finally {
+    mysqlStorage.disconnect();
 }
 ````
 
 <br>
 
 To delete a user of the databse use the following code. Change the setting at 'id' and 'table'
-````java
-private static void deleteUser(id){
-    try(Connection connection = MySQL.getHikariDataSource().getConnection(); PreparedStatement ps = connection.prepareStatement("DELETE FROM table WHERE id = ?")){
-        ps.setString(1, id);
-        ps.execute();
-    }catch (SQLException e){
-         e.printStackTrace();
-    }
+```` java
+MySQLStorage mysqlStorage = new MySQLStorage();
+String sql = "DELETE FROM table WHERE id = ?";
+try{
+    PreparedStatement statement = mysqlStorage.connect().prepareStatement(sql);
+    statement.setString(1, id);
+    statement.execute();
+} catch (SQLException e){
+    e.printStackTrace();
+} finally {
+    mysqlStorage.disconnect();
 }
 ````
 
 # Dependencies
-Those dependencies are needed for the plugin to work. Choose between Maven and Gradle.
-<br>
-## Gradle (kotlin)
-````
-repositories {
-  maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
-  
-  maven("https://oss.sonatype.org/content/repositories/snapshots")
-  maven("https://oss.sonatype.org/content/repositories/central")
-}
-
-dependencies {
-  compileOnly("org.spigotmc:spigot-api:1.19.3-R0.1-SNAPSHOT")
-  compileOnly("org.spigotmc:spigot:1.19.3-R0.1-SNAPSHOT")
-  compile group: 'com.zaxxer', name: 'HikariCP', version: '3.1.0"
-}
-
-````
-
-
-## Maven
-````
-<repository>
-            <id>spigot-repo</id>
-            <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
-</repository>
-<dependency>
-            <groupId>org.bukkit</groupId>
-            <artifactId>bukkit</artifactId>
-            <version>1.8.8-R0.1-SNAPSHOT</version>
-            <scope>provided</scope>
-</dependency>
-<dependency>
-	<groupId>com.zaxxer</groupId>
-	<artifactId>HikariCP</artifactId>
-	<version>3.1.0</version>
-</dependency>
-````
+Currently there is no dependency for this project. If u want to use it, copy the MySQLStorage class from the mysql folder and use it as stated above.
+A dependency will follow soon.
 
 # Issues / Fixes
 
